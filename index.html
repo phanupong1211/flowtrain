@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องมือวัดอัตราการไหลอัลตราโซนิค: พื้นฐานและการติดตั้งสำหรับช่างใหม่</title>
+    <style>
+        /* Basic styling for the body and container */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8f0; /* Very light green background */
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Prominent shadow */
+        }
+        /* Styling for headings */
+        h1 {
+            color: #00897b; /* Teal */
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.8em;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #004d40; /* Darker Teal */
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 2.0em;
+            border-bottom: 2px solid #80cbc4; /* Lighter teal border */
+            padding-bottom: 10px;
+        }
+        /* Styling for paragraphs and lists */
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background: #e0f7fa; /* Light cyan background for list items */
+            margin-bottom: 10px;
+            padding: 12px 20px;
+            border-left: 5px solid #00bcd4; /* Cyan border */
+            border-radius: 6px;
+            font-size: 1.05em;
+        }
+        ol {
+            padding-left: 25px;
+        }
+        ol li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        /* Styling for button group and individual buttons */
+        .button-group {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin: 0 15px;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .button.audio-control { /* Specific style for audio buttons */
+            background-color: #6c757d; /* Different color for audio controls */
+        }
+        .button.audio-control:hover {
+            background-color: #5a6268;
+        }
+        .button:hover {
+            background-color: #45a049;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+        }
+        .button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+        .button::before { /* Ripple effect */
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out;
+        }
+        .button:active::before {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+        }
+
+        /* Styling for info boxes, hidden by default */
+        .info-box {
+            background-color: #fff3e0; /* Light orange background */
+            border: 1px solid #ffcc80; /* Medium orange border */
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 30px;
+            display: none; /* Hidden by default */
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        }
+        .info-box.active {
+            display: block; /* Shown when active */
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Highlighted text styling */
+        .highlight {
+            color: #d32f2f; /* Dark Red */
+            font-weight: bold;
+        }
+        /* Image container styling */
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px; /* Space between images */
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            flex: 1 1 45%; /* Allows images to be responsive, max 2 per row */
+            min-width: 250px; /* Minimum width before stacking */
+        }
+        .image-caption {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+        /* Footer styling */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            color: #777;
+            font-size: 0.9em;
+        }
+        .voice-selection {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .voice-selection label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        .voice-selection select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌊 เครื่องมือวัดอัตราการไหลอัลตราโซนิค (SIEMENS Clamp-on): พื้นฐานและการติดตั้ง 🛠️</h1>
+
+        <p>สวัสดีครับช่างใหม่ทุกท่าน! ในงานอุตสาหกรรม การวัดอัตราการไหลของของไหลในท่อเป็นสิ่งสำคัญยิ่ง <span class="highlight">เครื่องมือวัดอัตราการไหลชนิดอัลตราโซนิคแบบรัดท่อ (Ultrasonic Clamp-on Flow Meter)</span> โดยเฉพาะอย่างยิ่งของแบรนด์ <span class="highlight">SIEMENS</span> เป็นเทคโนโลยีที่น่าสนใจและมีประโยชน์มาก เพราะสามารถวัดได้โดยไม่ต้องตัดท่อ ทำให้ประหยัดเวลาและค่าใช้จ่ายในการติดตั้งและบำรุงรักษา</p>
+
+        <p>วัตถุประสงค์ของเอกสารนี้คือเพื่อเป็นแนวทางมาตรฐาน (Standard Operating Procedure - SOP) ในการติดตั้ง ตรวจสอบ และเริ่มใช้งาน Siemens SITRANS FUP 1010 Portable Ultrasonic Flowmeter แบบ Clamp-On เพื่อให้สามารถวัดอัตราการไหลได้อย่างถูกต้องและเชื่อถือได้ ขอบเขตการใช้งานสำหรับงานวัดของเหลว เช่น น้ำมัน, น้ำ, น้ำยาเคมี, ของเหลวไฮดรอลิก ในท่อโลหะหรือพลาสติก โดยใช้ Clamp-On ultrasonic sensor ที่ติดตั้งภายนอกท่อ</p>
+
+        <div class="image-container">
+            <!-- Image 1: Overall view of a Siemens Clamp-on Flow Meter -->
+            <figure>
+                <img src="https://cz.all.biz/img/cz/catalog/60969.jpg" alt="เครื่องมือวัดอัตราการไหล SIEMENS">
+                <figcaption class="image-caption"><em> (ภาพจำลอง: เครื่องมือวัดอัตราการไหลอัลตราโซนิค SIEMENS)</figcaption>
+            </figure>
+        </div>
+
+        ---
+
+        <h2>🎯 เครื่องมือวัดอัตราการไหลอัลตราโซนิคแบบรัดท่อคืออะไร?</h2>
+        <p>เครื่องมือวัดชนิดนี้ทำงานโดยใช้หลักการของ <span class="highlight">คลื่นเสียงอัลตราโซนิค</span> ส่งผ่านของไหลในท่อ โดยไม่ต้องสัมผัสกับของไหลโดยตรง หัววัด (Transducers) จะถูกรัดติดอยู่ภายนอกท่อ ทำให้การติดตั้งง่าย สะดวก และไม่รบกวนกระบวนการทำงาน</p>
+
+        ---
+
+        <h2>✨ ทำไมเครื่องมือวัดชนิดนี้จึงสำคัญ?</h2>
+        <ul>
+            <li><span class="highlight">ไม่รบกวนกระบวนการ:</span> ติดตั้งง่าย ไม่ต้องตัดท่อ ไม่ต้องหยุดไลน์ผลิต</li>
+            <li><span class="highlight">ความปลอดภัย:</span> ไม่มีของไหลรั่วไหลออกมา ลดความเสี่ยงในการทำงานกับของไหลอันตราย</li>
+            <li><span class="highlight">ความหลากหลาย:</span> ใช้ได้กับท่อหลายขนาดและวัสดุที่แตกต่างกัน</li>
+            <li><span class="highlight">บำรุงรักษาง่าย:</span> ไม่มีชิ้นส่วนที่เคลื่อนไหวภายในท่อ ลดการสึกหรอและค่าใช้จ่ายในการบำรุงรักษา</li>
+            <li><span class="highlight">ความแม่นยำ:</span> ให้ค่าการวัดที่แม่นยำสำหรับการควบคุมกระบวนการ</li>
+        </ul>
+
+        ---
+
+        <h2>🛠️ ส่วนประกอบหลักของเครื่องมือวัด SIEMENS Clamp-on</h2>
+        <p>โดยทั่วไป เครื่องมือวัด SIEMENS Clamp-on จะประกอบด้วย:</p>
+        <ol>
+            <li><span class="highlight">Siemens portable (เครื่องอ่านและประมวลผล):</span> ใช้ประมวลผล ultrasonic transit-time</li>
+            <li><span class="highlight">Clamp-On sensors A & B:</span> ทำหน้าที่ส่งและรับคลื่นเสียง ultrasonic ผ่านท่อและของเหลว</li>
+            <li><span class="highlight">EZ Clamp หรือ Spacer bar:</span> ใช้ยึดเซ็นเซอร์ให้ตรงตามระยะที่กำหนด (Lin)</li>
+            <li><span class="highlight">Coupling gel (Ultrasonic gel):</span> ช่วยเพิ่มการส่งผ่านคลื่นเสียงและลดช่องว่างอากาศระหว่างเซ็นเซอร์กับท่อ</li>
+            <li><span class="highlight">Cleaning kit (กระดาษทราย, แปรง, ผ้า):</span> ใช้ทำความสะอาดผิวท่อเพื่อเพิ่มการนำเสียง</li>
+            <li><span class="highlight">ตลับเมตร/Thickness gauge:</span> ใช้วัดเส้นผ่านศูนย์กลางภายนอก (OD) ของท่อและตรวจสอบความหนาของผนังท่อ</li>
+            <li><span class="highlight">สายสัญญาณ:</span> สำหรับเชื่อมต่อเซ็นเซอร์กับเครื่อง Siemens portable</li>
+        </ol>
+         <div class="image-container">
+            <!-- Image 1: Overall view of a Siemens Clamp-on Flow Meter -->
+            <figure>
+                <img src="https://i.postimg.cc/JzdLhjVC/Screenshot-2025-07-06-163026.png" alt="เครื่องมือในการทำงาน">
+                <figcaption class="image-caption"><em> (ภาพจำลอง: เครื่องมือในการทำงาน)</figcaption>
+            </figure>
+        </div>
+
+        ---
+
+        <h2>⚙️ หลักการทำงานเบื้องต้น (Transit Time Method)</h2>
+        <p>เครื่องมือวัด SIEMENS Clamp-on ส่วนใหญ่ใช้หลักการ <span class="highlight">Transit Time Method</span>:</p>
+        <ol>
+            <li>หัววัดตัวแรก (Upstream Transducer) ส่งคลื่นอัลตราโซนิคไปยังหัววัดตัวที่สอง (Downstream Transducer)</li>
+            <li>ในขณะเดียวกัน หัววัดตัวที่สองก็ส่งคลื่นอัลตราโซนิคกลับไปยังหัววัดตัวแรก</li>
+            <li><span class="highlight">ความเร็วของคลื่นเสียงจะถูกเร่งขึ้นเมื่อเดินทางตามทิศทางการไหลของของไหล และจะช้าลงเมื่อเดินทางทวนทิศทางการไหล</span></li>
+            <li>เครื่องส่งสัญญาณจะคำนวณ <span class="highlight">ความแตกต่างของเวลาที่คลื่นเสียงใช้ในการเดินทาง</span> ไปและกลับ</li>
+            <li>ความแตกต่างของเวลานี้จะถูกแปลงเป็นค่าอัตราการไหลของของไหลในท่อ</li>
+        </ol>
+
+        ---
+
+        <h2>🔧 การติดตั้งเบื้องต้นสำหรับช่างใหม่</h2>
+        <p>การติดตั้งที่ถูกต้องเป็นสิ่งสำคัญเพื่อให้ได้ค่าการวัดที่แม่นยำ:</p>
+        <ol>
+            <li><span class="highlight">การเตรียมท่อและจุดติดตั้ง:</span>
+                <ul>
+                    <li>ควรเลือกส่วนของท่อที่เป็นแนวตรง (straight run) ที่ยาวเพียงพอ อย่างน้อย 10 เท่าของเส้นผ่านศูนย์กลางท่อ (10D) ในส่วนต้นน้ำ (upstream) และ 5 เท่าของเส้นผ่านศูนย์กลางท่อ (5D) ในส่วนปลายน้ำ (downstream) เพื่อให้การไหลพัฒนาเต็มที่ (fully-developed flow)</li>
+                    <li>หลีกเลี่ยงการติดตั้งใกล้กับจุดโค้ง (bend), วาล์ว (valve), ทางออกของปั๊ม (pump discharge) หรือแนวเชื่อม (weld seam) เนื่องจากจะทำให้การไหลปั่นป่วน (turbulence)</li>
+                    <li>ควรเป็นทิศทางการไหลขึ้นด้านบนสำหรับท่อแนวตั้ง เพื่อหลีกเลี่ยงช่องว่างอากาศ (voids)</li>
+                    <li>สำหรับท่อแนวนอน: หลีกเลี่ยงตำแหน่ง 12 นาฬิกา (ด้านบนสุด) หรือ 6 นาฬิกา (ด้านล่างสุด) เนื่องจากอาจมีอากาศหรือตะกอนสะสม ตำแหน่ง 9 หรือ 3 นาฬิกาเหมาะสมที่สุด</li>
+                    <li>ตรวจสอบให้แน่ใจว่าท่อมีการไหลเต็ม (pipe full) ไม่มีช่องอากาศ (air pocket) หรือการไหลแบบ slug flow</li>
+                    </ol>
+                    <div class="image-container">
+                        <figure>
+                            <img src="https://i.postimg.cc/C5MPD6kP/Picture1.png" alt="จุดติดตั้ง">
+                            <figcaption class="image-caption"><em> (ภาพจำลอง: จุดติดตั้ง)</figcaption>
+                            <img src="https://i.postimg.cc/cHBkvNgt/Picture2.png" alt="มุมการติดตั้ง">
+                            <figcaption class="image-caption"><em> (ภาพจำลอง: มุมการติดตั้ง)</figcaption>
+                        </figure>
+                    </div>
+                </ul>
+            </li>
+            <li><span class="highlight">การเตรียมผิวท่อ:</span>
+                <ul>
+                    <li>ใช้ผ้าเช็ดคราบมันออกก่อน</li>
+                    <li>ขัดด้วยกระดาษทรายจนเห็นเนื้อโลหะหรือผิวท่อเรียบสนิท โดยให้พื้นที่กว้างประมาณ 5 ซม. รอบตำแหน่งติดตั้ง</li>
+                    <li>เช็ดผิวท่อให้แห้ง เพื่อป้องกันการปนเปื้อนของ coupling gel</li>
+                </ul>
+            </li>
+            <li><span class="highlight">การติดตั้ง Sensor:</span>
+                <ul>
+                    <li>ทา coupling gel เป็นเส้นยาวตามหน้าสัมผัสของเซ็นเซอร์ทั้งสองตัว</li>
+                    <li>ยึดเซ็นเซอร์ A ที่ตำแหน่งต้นน้ำ (upstream) ด้วย EZ clamp หรือ spacer bar</li>
+                    <li>ยึดเซ็นเซอร์ B ที่ตำแหน่งปลายน้ำ (downstream) ให้ตรงตามระยะห่าง Ltn spacing ที่เครื่อง Flowmeter แนะนำ</li>
+                    <li>รัด clamp ให้แน่นพอสมควร แต่อย่าบีบจน coupling gel หลุดออกหมด</li>
+                    <li>สังเกตให้เซ็นเซอร์แนบสนิทกับผิวท่อ ไม่เอียง หรือบิดเบี้ยว</li>
+                </ul>
+            </li>
+            <li><span class="highlight">การต่อสาย:</span>
+                <ul>
+                    <li>ต่อสายเซ็นเซอร์เข้ากับช่อง UP และ DN บนเครื่องอย่างถูกต้อง ตามป้ายกำกับของเซ็นเซอร์</li>
+                    <li>ตรวจสอบว่า connector ไม่หลวม ไม่มีการบิดหรือสายเคเบิลตึงเกินไป</li>
+                </ul>
+            </li>
+            <li><span class="highlight">การตั้งค่า Flowmeter (Commissioning):</span>
+                <ul>
+                    <li>เปิดเครื่อง Flowmeter หน้าจอหลักจะปรากฏขึ้น</li>
+                    <li>กด Quick Commissioning</li>
+                    <li>เลือกหน่วยวัดที่ต้องการ เช่น Metric ($m^3/h$) หรือ English (gpm)</li>
+                    <li>ป้อนค่า OD (เส้นผ่านศูนย์กลางภายนอก), ความหนาของผนังท่อ (wall thickness) และวัสดุของท่อ</li>
+                    <li>ป้อนข้อมูลของเหลวที่กำลังวัด</li>
+                    <li>เลือก Sensor model & size ที่ถูกต้อง (เช่น Uni, portable, size A2 ถึง E2 ซึ่งมีช่วงเส้นผ่านศูนย์กลางท่อที่รองรับต่างกัน)</li>
+                    <li>เลือกโหมดการติดตั้ง เลือกระหว่าง Reflect หรือ Direct ตามวิธีการติดตั้งที่ใช้
+                        <ul>
+                            <li>Direct Mode: Transducers อยู่คนละด้านของท่อ</li>
+                            <li>Reflect Mode: Transducers อยู่ด้านเดียวกันของท่อ</li>
+                        </ul>
+                                <div class="image-container">
+            <!-- Image 1: Overall view of a Siemens Clamp-on Flow Meter -->
+            <figure>
+                <img src="https://i.postimg.cc/Z5qmZVQL/Screenshot-2025-07-06-163114.png" alt="เครื่องมือในการทำงาน">
+                <figcaption class="image-caption"><em> (ภาพจำลอง: เครื่องมือในการทำงาน)</figcaption>
+            </figure>
+        </div>
+
+                    </li>
+                    <li>เครื่องจะแสดงค่า Spacing Ltn เพื่อยืนยันว่าเซ็นเซอร์ได้รับการติดตั้งตามระยะที่ถูกต้อง</li>
+                    <li>เลือก Install Complete</li>
+                </ul>
+            </li>
+            <li><span class="highlight">ตรวจสอบ Waveform:</span>
+                <ul>
+                    <li>เข้าเมนู Maintenance and Monitoring → Monitoring → Sensor → Receive signal</li>
+                    <li>ควรมีคลื่น Sinusoidal 2-3 รอบที่ชัดเจน ไม่มีสัญญาณรบกวน (noise) กระจายหรือ Peak แตก</li>
+                </ul>
+            </li>
+            <li><span class="highlight">การตั้งค่า Zero:</span>
+                <ul>
+                    <li>หากสามารถปิดวาล์วได้ ให้ทำการ Zero set เพื่อลดค่า Offset</li>
+                    <li>หากไม่สามารถปิดวาล์วได้ ให้บันทึกค่า Offset flow ไว้เป็นค่า Baseline</li>
+                </ul>
+            </li>
+        </ol>
+
+        ---
+
+        <div class="voice-selection">
+            <label for="voiceSelect">เลือกเสียง AI:</label>
+            <select id="voiceSelect"></select>
+        </div>
+
+        <div class="button-group">
+            <button class="button" onclick="showInfo('installationTips')">เคล็ดลับการติดตั้ง</button>
+            <button class="button" onclick="showInfo('maintenanceTips')">การบำรุงรักษา</button>
+            <button class="button" onclick="showInfo('troubleshootingTips')">การแก้ไขปัญหา</button>
+            <!-- Buttons for audio control using Web Speech API -->
+            <button class="button audio-control" onclick="playTextToSpeech()">▶️ เล่นเสียงอธิบาย (AI)</button>
+            <button class="button audio-control" onclick="stopTextToSpeech()">⏸️ หยุดเสียง (AI)</button>
+        </div>
+
+        <!-- Information boxes, initially hidden -->
+        <div id="installationTipsInfo" class="info-box">
+            <h2>เคล็ดลับการติดตั้งเพิ่มเติม</h2>
+            <ul>
+                <li><span class="highlight">ตรวจสอบสภาพท่อ:</span> ท่อที่เก่า มีสนิมมาก หรือมีคราบสกปรกหนา อาจส่งผลต่อความแม่นยำ</li>
+                <li><span class="highlight">หลีกเลี่ยงฟองอากาศ:</span> ตำแหน่งติดตั้งควรหลีกเลี่ยงจุดที่มีฟองอากาศในของไหล</li>
+                <li><span class="highlight">การกราวด์:</span> ตรวจสอบให้แน่ใจว่ามีการกราวด์ที่ถูกต้องเพื่อป้องกันสัญญาณรบกวน</li>
+                <li><span class="highlight">การป้องกันสภาพแวดล้อม:</span> ป้องกันเครื่องมือวัดจากแสงแดดโดยตรง, ฝน, หรืออุณหภูมิที่สูงเกินไป</li>
+                <li><span class="highlight">สำหรับระบบ Dual-path:</span> แนะนำตำแหน่ง 10 และ 2 นาฬิกาสำหรับการติดตั้งแบบ Reflect Mount เพื่อช่วยแก้ไขปัญหาการไหลแบบไขว้ (cross flow) หรือการไหลวน (swirl)</li>
+            </ul>
+        </div>
+
+        <div id="maintenanceTipsInfo" class="info-box">
+            <h2>การบำรุงรักษาเบื้องต้น</h2>
+            <ul>
+                <li><span class="highlight">ทำความสะอาดหัววัด:</span> ตรวจสอบและทำความสะอาดหัววัดและพื้นผิวท่อเป็นประจำ</li>
+                <li><span class="highlight">ตรวจสอบ Coupling Gel:</span> ตรวจสอบว่าเจลยังอยู่ครบถ้วนและไม่แห้ง</li>
+                <li><span class="highlight">ตรวจสอบสายเคเบิล:</span> ตรวจสอบสภาพสายเคเบิลว่าไม่มีการชำรุดหรือฉีกขาด และสายไม่ตกหรือดึงรั้ง</li>
+                <li><span class="highlight">ตรวจสอบการยึดจับ:</span> ตรวจสอบว่าหัววัดยังคงยึดติดกับท่ออย่างแน่นหนา</li>
+                <li><span class="highlight">สอบเทียบ:</span> ควรมีการสอบเทียบ (Calibration) ตามระยะเวลาที่กำหนดโดยผู้เชี่ยวชาญ</li>
+            </ul>
+        </div>
+
+        <div id="troubleshootingTipsInfo" class="info-box">
+            <h2>การแก้ไขปัญหาเบื้องต้น</h2>
+            <ul>
+                <li><span class="highlight">ค่าการวัดไม่เสถียร/ผิดปกติ:</span>
+                    <ul>
+                        <li>ตรวจสอบฟองอากาศในท่อ</li>
+                        <li>ตรวจสอบการติดตั้งหัววัด (ระยะห่าง, Coupling Gel)</li>
+                        <li>ตรวจสอบสัญญาณรบกวนทางไฟฟ้า</li>
+                        <li>ตรวจสอบ Waveform: ควรมีคลื่น Sinusoidal 2-3 รอบที่ชัดเจน ไม่มีสัญญาณรบกวน (noise) กระจายหรือ Peak แตก</li>
+                    </ul>
+                </li>
+                <li><span class="highlight">ไม่มีการอ่านค่า:</span>
+                    <ul>
+                        <li>ตรวจสอบการเชื่อมต่อสายเคเบิล</li>
+                        <li>ตรวจสอบการจ่ายไฟไปยังเครื่องส่งสัญญาณ</li>
+                        <li>ตรวจสอบความเสียหายของหัววัด/เครื่องส่งสัญญาณ</li>
+                    </ul>
+                </li>
+                <li><span class="highlight">หน้าจอแสดงข้อผิดพลาด:</span>
+                    <ul>
+                        <li>อ้างอิงคู่มือ SIEMENS สำหรับรหัสข้อผิดพลาดเฉพาะ</li>
+                    </ul>
+                </li>
+                 <li><span class="highlight">การไหลเป็นค่าลบ:</span>
+                    <ul>
+                        <li>ตรวจสอบทิศทางการไหลให้ถูกต้อง (Flow ควรเป็นบวก)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        ---
+
+        <footer>
+            <p>การทำความเข้าใจและฝึกฝนการติดตั้งและบำรุงรักษาเครื่องมือวัดอัตราการไหลชนิดอัลตราโซนิคจะช่วยให้คุณเป็นช่างที่มีความเชี่ยวชาญยิ่งขึ้น!</p>
+            <p>&copy; 2025 ข้อมูลพื้นฐานสำหรับช่างเทคนิค</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize SpeechSynthesisUtterance and SpeechSynthesis API
+        let utterance = null;
+        const synth = window.speechSynthesis;
+        const voiceSelect = document.getElementById('voiceSelect');
+
+        // Function to populate the voice dropdown
+        function populateVoiceList() {
+            // Get all available voices
+            const voices = synth.getVoices();
+            // Clear existing options
+            voiceSelect.innerHTML = '';
+
+            // Add an option for each voice
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.textContent = voice.name + ' (' + voice.lang + ')';
+                option.setAttribute('data-lang', voice.lang);
+                option.setAttribute('data-name', voice.name);
+                voiceSelect.appendChild(option);
+
+                // Select the Thai voice by default if available
+                if (voice.lang === 'th-TH' || voice.lang.startsWith('th-')) {
+                    option.selected = true;
+                }
+            });
+        }
+
+        // Populate voice list when voices are loaded
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = populateVoiceList;
+        } else {
+            // Fallback for browsers that don't fire onvoiceschanged immediately
+            populateVoiceList();
+        }
+
+
+        /**
+         * Toggles the visibility of information boxes based on the provided ID.
+         * Hides all other info boxes before showing the selected one.
+         * @param {string} infoId - The ID of the info box to show (e.g., 'installationTips', 'maintenanceTips').
+         */
+        function showInfo(infoId) {
+            // Get all elements with the class 'info-box'
+            const infoBoxes = document.querySelectorAll('.info-box');
+            // Iterate over each info box and remove the 'active' class to hide them
+            infoBoxes.forEach(box => {
+                box.classList.remove('active');
+            });
+
+            // If the infoId ends with 'Info', use it directly, otherwise append 'Info'
+            const targetId = infoId.endsWith('Info') ? infoId : infoId + 'Info';
+            const selectedBox = document.getElementById(targetId);
+            
+            // If the selected info box exists, add the 'active' class to display it
+            if (selectedBox) {
+                selectedBox.classList.add('active');
+            }
+        }
+
+        /**
+         * Plays the main text content using the Web Speech API (Text-to-Speech).
+         * It concatenates text from various sections of the document.
+         */
+        function playTextToSpeech() {
+            // Stop any ongoing speech before starting a new one
+            if (synth.speaking) {
+                synth.cancel();
+            }
+
+            // Collect all the text from the main content sections
+            let textToSpeak = "";
+            textToSpeak += document.querySelector('h1').textContent + ". "; // Main title
+            textToSpeak += document.querySelector('p:nth-of-type(1)').textContent + ". "; // Introduction paragraph
+            textToSpeak += document.querySelector('p:nth-of-type(2)').textContent + ". "; // Purpose and scope
+            textToSpeak += document.querySelector('h2:nth-of-type(1)').textContent + ". " + document.querySelector('p:nth-of-type(3)').textContent + ". "; // What is it?
+            textToSpeak += document.querySelector('h2:nth-of-type(2)').textContent + ". "; // Why is it important?
+            document.querySelectorAll('ul:nth-of-type(1) li').forEach(item => {
+                textToSpeak += item.textContent + ". ";
+            });
+            textToSpeak += document.querySelector('h2:nth-of-type(3)').textContent + ". " + document.querySelector('p:nth-of-type(4)').textContent + ". "; // Main components
+            document.querySelectorAll('ol:nth-of-type(1) li').forEach(item => {
+                textToSpeak += item.textContent + ". ";
+                // Also include nested ul for components
+                const nestedUl = item.querySelector('ul');
+                if (nestedUl) {
+                    nestedUl.querySelectorAll('li').forEach(nestedItem => {
+                        textToSpeak += nestedItem.textContent + ". ";
+                    });
+                }
+            });
+            textToSpeak += document.querySelector('h2:nth-of-type(4)').textContent + ". " + document.querySelector('p:nth-of-type(5)').textContent + ". "; // Basic working principle
+            document.querySelectorAll('ol:nth-of-type(2) li').forEach(item => {
+                textToSpeak += item.textContent + ". ";
+            });
+            textToSpeak += document.querySelector('h2:nth-of-type(5)').textContent + ". " + document.querySelector('p:nth-of-type(6)').textContent + ". "; // Installation basics
+            document.querySelectorAll('ol:nth-of-type(3) li').forEach(item => {
+                textToSpeak += item.textContent + ". ";
+                const nestedUl = item.querySelector('ul');
+                if (nestedUl) {
+                    nestedUl.querySelectorAll('li').forEach(nestedItem => {
+                        textToSpeak += nestedItem.textContent + ". ";
+                    });
+                }
+            });
+            textToSpeak += document.querySelector('footer p:nth-of-type(1)').textContent; // Footer message
+
+            // Create a new SpeechSynthesisUtterance object
+            utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+            // Get the selected voice from the dropdown
+            const selectedOption = voiceSelect.selectedOptions[0];
+            const selectedVoiceName = selectedOption.getAttribute('data-name');
+            const selectedVoiceLang = selectedOption.getAttribute('data-lang');
+
+            // Find the selected voice object
+            const voices = synth.getVoices();
+            const selectedVoice = voices.find(voice => voice.name === selectedVoiceName && voice.lang === selectedVoiceLang);
+
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+                utterance.lang = selectedVoice.lang; // Set the language based on the selected voice
+            } else {
+                // Fallback to default Thai voice if selected voice is not found (e.g., after refresh)
+                const thaiVoice = voices.find(voice => voice.lang === 'th-TH' || voice.lang.startsWith('th-'));
+                if (thaiVoice) {
+                    utterance.voice = thaiVoice;
+                    utterance.lang = 'th-TH';
+                } else {
+                    console.warn("Selected voice not found and Thai voice not available. Using default browser voice.");
+                }
+            }
+
+            // Speak the text
+            synth.speak(utterance);
+        }
+
+        /**
+         * Stops the ongoing text-to-speech.
+         */
+        function stopTextToSpeech() {
+            if (synth.speaking) {
+                synth.cancel();
+            }
+        }
+    </script>
+</body>
+</html>
